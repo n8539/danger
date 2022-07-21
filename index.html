@@ -119,10 +119,10 @@
 		$(function(){
 			//$.get('/main/dangerlog');//2022-04-13 不记录日志了
 			var $lastPanel="";//记录显示详细列表时最后一次显示的panel是哪一个
-			var rootUrl='';
+			var rootUrl='https://www.tablofun.com/app/40/data/list';
 			if(!localStorage.dangers){
 					$.ajax({
-						url:rootUrl+'/api/danger/new_getAll',
+						url:rootUrl+'/getAll',
 					}).done(
 						function(data){
 							var json=JSON.parse(data);
