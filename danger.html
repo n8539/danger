@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="referrer" content="never">
+	<title>重要风险源库</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<style type="text/css">
+		.toUp{
+			   text-transform:uppercase;
+			}
+		body { padding-top: 70px; }
+		#search {float: right;}
+		.bs-callout-danger {
+    	border-left-color: #ce4844;
+		}
+		.bs-callout {
+		    padding: 5px;
+		    margin: 2px 0;
+		    border: 0px solid #5bc0de;
+		    border-left-width: 5px;
+		    border-radius: 1px;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" style="background:#5bc0de;">
+	  <div class="container">
+		<button type="button" class="btn btn-default navbar-btn" id="getAll">基地定检重要风险源</button>
+		<button type="button" class="btn btn-default navbar-btn" id="refresh">刷新</button>
+		<button type="button" class="btn btn-default navbar-btn"  style="display:none;" id="resPanelShow">PANEL</button>
+		<button type="button" class="search btn btn-default navbar-btn" id="search"><a href="javascript:scroll(0,0)">筛 选 </a><span class="caret"></span></button>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="panel panel-default" id="sPanel"  style="display:none;">
+			<div class="bs-callout bs-callout-info">筛 选</div>
+			<div class="form-group">
+				<!-- Split button -->
+				<div class="btn-group col-lg-12" style="width:100%;margin:5px auto;">
+				  <button type="button" class="btn btn-default btn-block dropdown-toggle text-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="text-danger">选择部位 -<span id="zone">ALL</span><span class="caret"></span></span>
+				  </button>
+				  <ul class="dropdown-menu" style="width:100%;margin:10px auto;">
+					<li class="list-group-item"><a href="#">ALL</a></li>
+					<li class="list-group-item"><a href="#">发动机</a></li>
+					<li class="list-group-item"><a href="#">起落架</a></li>
+					<li class="list-group-item"><a href="#">机身</a></li>
+					<li class="list-group-item"><a href="#">电气</a></li>
+					<li class="list-group-item"><a href="#">电子</a></li>
+				  </ul>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-12">
+				  <input type="text" class="form-control" id="keyword" placeholder="关键字：作业名称、风险、后果（模糊查询）" autocomplete="on">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-12">
+				  <button type="submit" class="btn btn-info btn-block" id="submit">查询</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-12 dropup">
+				  <button  class="btn btn-default" id="hisbtn" style="widht:40%">历史纪录</button>
+					<button type="submit" class="search btn btn-warning" id="up" style="widht:40%">收上 <span class="caret"></span></button>
+
+				</div>
+			</div>
+		</div>
+		<div  id="resPanel" style="display:none;">
+			<div  class="bs-callout bs-callout-info">重要风险源查询结果:<span class="cinfo"></span>(点击查看详情)</div>
+			<div class="list-group">
+				<a href="#" class="list-group-item" id="" rel="" style="display:none;">
+				<h4 class="list-group-item-heading"><p><span class="listId">ID</span>. 作业名称：<span class="name"></span></p>  <p class="text-danger">风险：<span class="wrong"></span></p></h4>
+				<p class="list-group-item-text"> <span class="label label-danger"> 严重度： <span class="rank">4</span></span> <span class="zone label label-info"></span>后果：<span class="effect"></span> </p>
+				</a>
+			</div>
+		</div>
+		<div id="detailPanel" style="display:none;">
+		<div class="center-block  text-success" style="font-size: 24px;">作业名称：<span class="name"></span></div>
+		<ul class="list-group">
+		  <li class="list-group-item">部位：<span class="zone"></span></li>
+		  <li class="list-group-item  text-danger">风险：<span class="wrong"></span></li>
+		  <li class="list-group-item  text-danger">后果：<span class="effect"></span> <span class="label label-danger"> 严重度： <span class="rank">4</span></span></li>
+		  <li class="list-group-item list-group-item-warning">防护措施：</li>
+		  <li class="list-group-item">
+			  <p>--警示：<span class="jingshi"></span></p>
+			  <p>--培训：<span class="peixun"></span></p>
+			  <p>--复核：<span class="fuhe"></span></p>
+			  <p>--工卡单：<span class="card"></span></p>
+			  <p>--规章程序：<span class="guizhang"></span></p>
+			  <p>--其他措施：<span class="others"></span></p>
+		  </li>
+		</ul>
+		<button class="btn btn-default btn-lg" id="star"> 个人收藏</button>
+		<button class="btn btn-default btn-lg" id="qunfa" data-zone=""> 部位群发 </button>
+				<button class="btn btn-default btn-lg" id="back"> &nbsp&nbsp返 &nbsp&nbsp 回&nbsp&nbsp </button>
+		</div>
+		<div  id="hisPanel">
+			<div class="bs-callout bs-callout-info">历史纪录</div>
+			<div class="list-group">
+				<a href="#" class="list-group-item" id="" rel="" style="display:none;">
+				<h4 class="list-group-item-heading"><p><span class="listId">ID</span>. 作业名称：<span class="name"></span></p>  <p class="text-danger">风险：<span class="wrong"></span></p></h4>
+				<p class="list-group-item-text"> <span class="label label-danger"> 严重度： <span class="rank">4</span></span> <span class="zone label label-info"></span>后果：<span class="effect"></span> </p>
+				</a>
+			</div>
+			<button class="btn btn-default btn-block" id="clearHis">删除历史</button>
+			<br />
+		</div>
+	</div>
+	<!-- body 最后 -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			//$.get('/main/dangerlog');//2022-04-13 不记录日志了
+			var $lastPanel="";//记录显示详细列表时最后一次显示的panel是哪一个
+			var rootUrl='';
+			if(!localStorage.dangers){
+					$.ajax({
+						url:rootUrl+'/api/danger/new_getAll',
+					}).done(
+						function(data){
+							var json=JSON.parse(data);
+							if(json.meta.status==200){
+								localStorage.dangers=data;
+								getlist(json.data, 'resPanel');
+							}else{
+								console.log("错误");
+							}
+						}
+					)
+			}else{
+				var timestamp = Date.parse(new Date())/1000;
+					json=JSON.parse(localStorage.dangers);
+					getlist(json.data, 'resPanel');
+					if(json.meta.time){
+						var s=(timestamp-json.meta.time)/3600;
+						if(s>24){
+							//localStorage.dangers="";
+							$.ajax({
+							url:rootUrl+'/api/danger/new_getAll',
+							}).done(
+								function(data){
+									var json=JSON.parse(data);
+									if(json.meta.status==200){
+										localStorage.dangers=data;
+										//getlist(json.data, 'resPanel');
+									}else{
+										console.log("错误");
+									}
+								}
+							)
+						}
+					}
+			}
+			if(!localStorage.history||!localStorage.dangers){
+					$('#hisPanel').hide();
+					$('#resPanel').slideDown();
+			}else{
+				$('#hisPanel').slideDown();
+				$('#resPanel').hide();
+				history();
+			}
+			$('#getAll').click(function(){
+				$('#sPanel').hide();
+				$('#hisPanel').hide();
+				$('#detailPanel').hide();
+				$('#resPanel').slideDown();
+				json=JSON.parse(localStorage.dangers);
+				getlist(json.data,'resPanel');
+			})
+			$('#resPanelShow').click(function(){
+				$('#sPanel').hide();
+				$('#hisPanel').hide();
+				$('#detailPanel').hide();
+				$('#resPanel').slideDown();
+			})
+
+			$('.search').click(function(){
+				$('#sPanel').slideToggle("fast");
+			})
+			$('#hisbtn').click(function(){
+				$('#resPanel').hide();
+				$('#detailPanel').hide();
+				$('#hisPanel').slideDown();
+				history();
+			})
+			function history(){
+				if(!localStorage.history) return;
+				$arr=$.unique(localStorage.history.split(','));//此处进行去重，其实应该再源头就进行去重
+				localStorage.history=$arr.join(',');
+				var $arr_res=[];
+				//console.log($arr);
+				$.each($arr,function(index,val){
+					json=JSON.parse(localStorage.dangers);
+					$arr_res.push(json.data[val]);
+				})
+				getlist($arr_res,'hisPanel');
+			}
+			$('#submit').click(function(){
+				$('#hisPanel').slideUp();
+				$('#resPanel').fadeOut('1000');
+				$('#detailPanel').hide();
+				$zone=$('#zone').text()=='ALL'?'':$('#zone').text();
+				$keyword=$('#keyword').val();
+				//console.log($zone,$keyword);
+				$('#resPanel').slideDown();
+				filter($zone,$keyword);
+			})
+			function filter(zone,keyword){
+				if(!zone&&!keyword){
+					$('#resPanel').slideDown();
+					json=JSON.parse(localStorage.dangers);
+					getlist(json.data,'resPanel');
+				}else{
+					json=JSON.parse(localStorage.dangers);
+					data=json.data;
+					data_filter=data.filter(function(e){ return e.zone.indexOf(zone) !== -1; });
+					data_filter2=data_filter.filter(function(e){ 
+					return e.name.indexOf(keyword)!== -1 || e.wrong.indexOf(keyword)!== -1 || e.effect.indexOf(keyword)!== -1; });
+					getlist(data_filter2,'resPanel');
+				}
+			}
+			function getlist(data,panelId) {
+				var $panel=$('#'+panelId).find('.list-group');
+				$length=data.length;
+				//console.log($length);
+				$panel.parent().find('.cinfo').text($length);
+				$panel.find('a').not(':first').remove();
+				$.each(data, function (i, item) {
+					//console.log(item);
+					$panel.append($panel.find('a:first').clone());
+					$panel.find('a:last').show();
+					$panel.find('a:last').attr('rel',item.id);
+					$panel.find('a:last .listId').text(i+1);
+					$panel.find('a:last .wrong').text(item.wrong);
+					$panel.find('a:last .rank').text(item.rank);
+					$panel.find('a:last .name').text(item.name);
+					$panel.find('a:last .zone').text(item.zone);
+					$panel.find('a:last .effect').text(item.effect);
+				})
+			}
+			$('#hisPanel').find('a').click(function(){
+				$('#sPanel').hide();
+				$('#hisPanel').hide();
+				$('#detailPanel').slideDown();
+			})
+			$('.list-group').on('click','a',function(){
+				$('#sPanel').hide();
+				$('#resPanel').hide();
+				$('#hisPanel').hide();
+				$lastPanel=$(this).parent().parent().attr('id');
+				console.log($lastPanel);
+				$('#detailPanel').slideDown();
+				$id=String($(this).attr('rel')-1);
+				if(!localStorage.history){
+						localStorage.history=$id;
+				}else{
+					$arr=localStorage.history.split(',');
+					if($arr.indexOf($id)==-1){
+						$arr.push($id);
+						//slice的使用，负数表示从数组后面开始截取
+						localStorage.history=$arr.slice(-5).join(',');; 												
+						console.log(localStorage.history);
+					}else{
+						console.log('已存在此条历史记录');
+						console.log(localStorage.history);
+					}					
+				}
+				$json=JSON.parse(localStorage.dangers);
+				$one=$json.data[$id];
+				//console.log($one);
+				$detail=$('#detailPanel');
+				$.each($one,function(index,val){
+					$detail.find('.'+index).text(val);//666!!!!!!
+				})
+				$('#star').attr('rel',$one.id);
+				$('#qunfa').attr('rel',$one.id);
+				$('#qunfa').attr('data-zone',$one.zone);
+			})
+			$('.btn-group').find('li').click(function(){
+				$('#zone').text($(this).text());
+			})
+			$('#star').click(function(){
+				alert('此功能暂停使用');
+				return;
+				console.log("发送到企业号");
+				$id=$(this).attr('rel');
+				$.ajax({
+						url:rootUrl+'/main/star/'+$id,
+					}).done(
+						function(data){
+							if(data==1){
+								console.log("成功");
+							}else{
+								console.log("错误");
+								alert('发送失败！请确保近期有访问"工作查询网站"获取认证！');
+							}
+						}
+					)				
+			})
+			$('#back').click(function(){
+				$('#'+$lastPanel).slideDown();
+				$('#detailPanel').slideUp();
+			})
+			$('#clearHis').click(function(){
+				localStorage.history="";
+				var $panel=$('#hisPanel').find('.list-group');
+				$panel.find('a').not(':first').remove();
+				$('#getAll').click();
+			})
+			$('#refresh').click(function(){
+				localStorage.dangers="";
+				location.reload();
+			})			
+			$('#qunfa').click(function(){
+				alert('暂停群发功能');
+				return;
+				var r=confirm("【警告！】将群发此条危险源到相应部位,部位所有成员都将看到！你确定要群发吗？");
+				if(r==true){
+					console.log("群发到相应部位");
+					$id=$(this).attr('rel');
+					$zone=$(this).attr('data-zone');
+					$.ajax({
+							url:rootUrl+'/main/send_to_zone/'+$id,
+						}).done(
+							function(data){
+								if(data==1){
+									console.log("成功");
+									alert('群发成功！已发送给'+$zone+'部位人员');
+								}else if(data==2){
+									console.log("没有权限");
+									alert('抱歉！您没有群发权限,请联系管理员');
+								}else{
+									console.log("错误");
+									alert('发送失败！请确保近期有访问"工作查询网站"获取认证！');
+								}
+							}
+						)
+					}				
+			})			
+		})
+	</script>
+</body>
+</html>
