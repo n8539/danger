@@ -120,9 +120,14 @@
 			//$.get('/main/dangerlog');//2022-04-13 不记录日志了
 			var $lastPanel="";//记录显示详细列表时最后一次显示的panel是哪一个
 			var rootUrl='https://www.tablofun.com/app/40/data/list';
+			function getJsonpData(data){
+				console.log("跨域成功")
+				//console.log(data)
+			}
 			if(!localStorage.dangers){
-					$.ajax({
-						url:rootUrl+'/getAll',
+/* 					$.ajax({
+					//关闭了SAE的数据库
+						url:rootUrl+'/api/danger/new_getAll',
 					}).done(
 						function(data){
 							var json=JSON.parse(data);
@@ -133,7 +138,8 @@
 								console.log("错误");
 							}
 						}
-					)
+					) */
+					$("body").append("<script src='https://www.tablofun.com/app/40/data/list/getAll?callback=getJsonpData'><\/script>");
 			}else{
 				var timestamp = Date.parse(new Date())/1000;
 					json=JSON.parse(localStorage.dangers);
