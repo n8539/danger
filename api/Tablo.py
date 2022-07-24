@@ -9,10 +9,10 @@ class handler(BaseHTTPRequestHandler):
     self.send_response(200)
     self.send_header('Content-type', 'text/plain')
     self.end_headers()
-    # req_url = 'https://www.tablofun.com/app/40/data/list/getAll'
-    # res=requests.get(req_url,timeout=5)
-    # data = json.loads(res.text, parse_float=str, parse_int=str)
-    self.wfile.write(str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')).encode())
+    req_url = 'https://www.tablofun.com/app/40/data/list/getAll'
+    res=requests.get(req_url,timeout=5)
+    data = json.loads(res.text, parse_float=str, parse_int=str)
+    self.wfile.write(data['rows'].encode())
     return
 
 # def req():
