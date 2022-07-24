@@ -12,7 +12,6 @@ class handler(BaseHTTPRequestHandler):
     res=requests.get(req_url,timeout=5)
     data = json.loads(res.text, parse_float=str, parse_int=str)
     self.wfile.write(data['rows'])
-    print(res)
     return
 
 # def req():
