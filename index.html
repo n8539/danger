@@ -122,13 +122,15 @@
 			var rootUrl='https://mfdj.tablo.fun/api/danger/new_getall';
 			//var rootUrl='https://www.tablofun.com/app/40/data/list/getAll';
 			$.ajax({
-						url:'api/tablo',
+						url:'api/Tablo',
 					}).done(
 						function(data){
 							console.log('成功')
-							console.log(data)
+							$("#refresh").text(data)
 						}
-					)								
+					)	
+
+
 			if(!localStorage.dangers){
 					$.ajax({
 					//关闭了SAE的数据库
